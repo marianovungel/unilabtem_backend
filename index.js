@@ -4,10 +4,10 @@ const app = express()
 //importações
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
-// const mongoose = require('mongoose')
+require('dotenv').config()
 
 //conectar ao Bongodb Atlas
-
+require('./services/database')
 
 //middlewares
 app.use(morgan())
@@ -17,4 +17,5 @@ app.use(bodyParser.json())
 app.get("/", (req, res)=>{ res.send("Requisição não autorizada!") })
 
 //inicializar o app
-app.listen("8000", console.log("Servidor Inicializado!"))
+const PORT=process.env.PORT
+app.listen(PORT, console.log("Servidor Inicializado!"))
