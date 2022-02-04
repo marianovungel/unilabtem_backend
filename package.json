@@ -4,7 +4,8 @@
   "description": "unilabtem, plataforma de venda e divulgação de negócio",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
   },
   "author": "Engenharia na Sociedade",
   "license": "ISC",
@@ -14,5 +15,8 @@
     "express": "^4.17.2",
     "mongoose": "^6.2.0",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
