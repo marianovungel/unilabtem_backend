@@ -14,6 +14,7 @@ app.use(morgan())
 app.use(bodyParser.json())
 
 //routas
+app.get("/", (req, res)=>{ res.send("Requisição não autorizada!") })
 
 //inicializar o app
 app.listen("8000", console.log("Servidor Inicializado!"))
