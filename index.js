@@ -5,6 +5,7 @@ const app = express()
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const HelloRouter = require('./routes/Hello.routes.js')
+const ProdutoRouter = require('./routes/Produto.routes.js')
 const cors = require('cors')
 require('dotenv').config()
 
@@ -25,6 +26,7 @@ app.use(cors())
 //routas
 app.get("/", (req, res)=>{ res.send("Requisição não autorizada!") })
 app.use("/hello", HelloRouter)
+app.use("/produto", ProdutoRouter)
 
 //inicializar o app
 const PORT=process.env.PORT
