@@ -10,7 +10,7 @@ const ProdutoSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    photo:{
+    imagem:{
         type:String,
         required:false,
     },
