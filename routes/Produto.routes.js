@@ -1,36 +1,88 @@
 const express = require('express')
 const router = express.Router()
-const Produto  = require('../models/produto')
+const Produto = require("../models/produto")
 
-router.get("/", async(req, res)=>{
+//create post
+router.post('/', async (req, res) => {
     try{
-        const produto = await Produto.find({})
-        res.json(produto)
+        const post = req.body;
+        const response = await new Produto(post).save();
+        res.json({error: false, post: response})
     }catch(err){
-        res.json(err)
+        res.json({error: true, message: err.message});
     }
-});
-router.get("/get", (req, res)=>{
-        res.json("produto")
-});
+})
 
+//Update user
+router.put('/:id', async (req, res) => {
+    try{
+        const post = await Produto.findById(req.params.id);
+        if(post.username === req.body.username){
+            try{
+                const id = req.params.id;
+                const novo_post = req.body;
+                const posts = await Produto.findByIdAndUpdate(id, novo_post);
+                res.json({error: false, posts});
+            }catch(err){
+                res.json({error: true, message: err.message});  
+            }
+        }else{
+            res.status(500).json("you can update only you post!")
+        }
+    }catch(err){
+        res.json({error: true, message: err.message});  
+    }
+})
+
+//delete user
+router.delete('/:id', async (req, res) => {
+    try{
+        const post = await Produto.findById(req.params.id);
+        if(post.username === req.body.username){
+            try{
+                await Produto.delete();
+                res.json({error: false, message: "post deletado com sucesso!"});
+            }catch(err){
+                res.json({error: true, message: err.message});  
+            }
+        }else{
+            res.status(500).json("you can delete only you post!")
+        }
+    }catch(err){
+        res.json({error: true, message: err.message});  
+    }
+})
+
+//get post
 router.get('/:id', async (req, res) => {
     try{
-            const id = req.params.id;
-            const produto = await Produto.findById(id);
-            const others = produto._doc;
-            res.status(200).json(others);
+        const id = req.params.id;
+        const post = await Produto.findById(id);
+        res.status(200).json(post);
         }catch(err){
             res.json({error: true, message: err.message});
         }
-});
-router.post("/", async(req, res)=>{
+})
+
+//get all post
+router.get('/', async (req, res) => {
+    const username = req.query.user;
+    const catName = req.query.cat;
     try{
-        const produto = req.body;
-        const saveproduto = await new Produto(produto).save();
-        res.json({error: false, produto: saveproduto})
-    }catch(err){
-        res.json({error: true, message: err.message})
-    }
-});
+        let posts;
+        if(username){
+            posts = await Produto.find({username})
+        }else if(catName){
+            posts = await Produto.find({categories:{
+                $in:[catName]
+            }})
+        }else{
+            posts = await Produto.find();
+        }
+        res.status(200).json(posts);
+        }catch(err){
+            res.json({error: true, message: err.message});
+        }
+})
+
 module.exports = router;

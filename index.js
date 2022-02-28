@@ -1,13 +1,18 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 
 //importações
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
-const HelloRouter = require('./routes/Hello.routes.js')
-const ProdutoRouter = require('./routes/Produto.routes.js')
 const cors = require('cors')
-require('dotenv').config()
+//routes
+const authRouter = require("./routes/auth.routes")
+const usersRouter = require("./routes/User.routes")
+const postsRouter = require("./routes/Produto.routes")
+const categoryRouter = require("./routes/Category.routes")
+const HelloRouter = require('./routes/Hello.routes.js')
+
 
 //conectar ao Bongodb Atlas
 require('./services/database')
@@ -25,8 +30,11 @@ app.use(cors())
 
 //routas
 app.get("/", (req, res)=>{ res.send("Requisição não autorizada!") })
+app.use("/auth/router", authRouter)
 app.use("/hello", HelloRouter)
-app.use("/produto", ProdutoRouter)
+app.use("/produto", postsRouter)
+app.use("/users", usersRouter)
+app.use("/categories", categoryRouter)
 
 //inicializar o app
 const PORT=process.env.PORT
