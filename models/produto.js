@@ -1,31 +1,31 @@
 const mongoose = require('mongoose');
 
 const ProdutoSchema = new mongoose.Schema({
-    nome:{
+    title:{
         type:String,
-        required:true,
-        unique:true
+        // required:true,
+        // unique:true
     },
     desc:{
         type:String,
-        required:true,
+        // required:true,
     },
-    imagem:{
+    photo:{
         type:String,
-        required:false,
+        // required:false,
     },
     username:{
         type:String,
-        required:true,
+        // required:true,
     },
     preco: {
         type:String,
-        required:false,
+        // required:false,
         default: "",
     },
     categories:{
         type:String,
-        required:false,
+        // required:false,
     },
 },
     {timestamps: true}
