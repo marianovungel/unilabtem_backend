@@ -21,7 +21,7 @@ const ProdutoSchema = new mongoose.Schema({
     preco: {
         type:String,
         // required:false,
-        default: "",
+        default: "20.01",
     },
     categories:{
         type:String,

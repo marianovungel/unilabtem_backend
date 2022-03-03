@@ -61,7 +61,7 @@ app.post("/upload", upload.single("file", (req, res)=>{
     }
 }))
 
-app.use("/files", express.static(path.resolve(__dirname, "./", "img")))
+app.use("/img", express.static(path.resolve(__dirname, "./", "img")))
 app.use((req, res, next)=>{
     res.header("Access-Control-Allow-Origin", "/*");
     res.header("Access-Control-Allow-Methods", 'GET,POST');
