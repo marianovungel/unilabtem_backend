@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const ProdutoSchema = new mongoose.Schema({
     title:{
@@ -15,6 +15,10 @@ const ProdutoSchema = new mongoose.Schema({
         // required:false,
     },
     username:{
+        type:String,
+        // required:true,
+    },
+    userwhatsapp:{
         type:String,
         // required:true,
     },

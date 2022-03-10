@@ -26,6 +26,7 @@ app.use(express.json())
 const multer = require('multer')
 app.use(express.urlencoded({extended: true}))
 
+
 const storage = multer.diskStorage({
     destination: (req, file, cb)=>{
         cb(null, path.resolve(__dirname, "./", "img"));
@@ -34,7 +35,7 @@ const storage = multer.diskStorage({
         cb(null, req.body.name);
     },
     limits:{
-        fileSize: 2*1024*1024,
+        fileSize: 4*1024*1024,
     },
     fileFilter: (req, file, cb)=>{
         const allowedMimes=[
