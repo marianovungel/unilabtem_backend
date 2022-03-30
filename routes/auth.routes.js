@@ -12,7 +12,7 @@ router.post("/register", async(req, res)=>{
             username: req.body.username,
             email: req.body.email,
             whatsapp: req.body.whatsapp,
-            password: hashedPass, 
+            password: hashedPass,
         });
 
         const user = await nerUser.save();
@@ -20,7 +20,6 @@ router.post("/register", async(req, res)=>{
     }catch(err){
         res.status(500).json(err);
     }
-    
     
 });
 

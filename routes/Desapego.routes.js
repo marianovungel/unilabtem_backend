@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const Produto = require("../models/produto")
+const Desapego = require("../models/Desapego")
 
 //create post
 router.post('/', async (req, res) => {
     try{
-        const post = req.body;
-        const response = await new Produto(post).save();
-        res.json({error: false, post: response})
+        const desapego = req.body;
+        const response = await new Desapego(desapego).save();
+        res.json({error: false, desapego: response})
     }catch(err){
         res.json({error: true, message: err.message});
     }
@@ -16,12 +16,12 @@ router.post('/', async (req, res) => {
 //Update user
 router.put('/:id', async (req, res) => {
     try{
-        const post = await Produto.findById(req.params.id);
+        const post = await Desapego.findById(req.params.id);
         if(post.username === req.body.username){
             try{
                 const id = req.params.id;
                 const novo_post = req.body;
-                const posts = await Produto.findByIdAndUpdate(id, novo_post);
+                const posts = await Desapego.findByIdAndUpdate(id, novo_post);
                 res.json({error: false, posts});
             }catch(err){
                 res.json({error: true, message: err.message});  
@@ -37,10 +37,11 @@ router.put('/:id', async (req, res) => {
 //delete user
 router.delete('/:id', async (req, res) => {
     try{
-        const post = await Produto.findById(req.params.id);
+        const post = await Desapego.findById(req.params.id);
         if(post.username === req.body.username){
             try{
-                await Produto.findByIdAndDelete(req.params.id);
+                // await Desapego.delete(req.params.id);
+                await Desapego.findByIdAndDelete(req.params.id);
                 res.json({error: false, message: "post deletado com sucesso!"});
             }catch(err){
                 res.json({error: true, message: err.message});  
@@ -57,7 +58,7 @@ router.delete('/:id', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try{
         const id = req.params.id;
-        const post = await Produto.findById(id);
+        const post = await Desapego.findById(id);
         res.status(200).json(post);
         }catch(err){
             res.json({error: true, message: err.message});
@@ -71,13 +72,13 @@ router.get('/', async (req, res) => {
     try{
         let posts;
         if(username){
-            posts = await Produto.find({username})
+            posts = await Desapego.find({username})
         }else if(catName){
-            posts = await Produto.find({categories:{
+            posts = await Desapego.find({categories:{
                 $in:[catName]
             }})
         }else{
-            posts = await Produto.find();
+            posts = await Desapego.find();
         }
         res.status(200).json(posts);
         }catch(err){

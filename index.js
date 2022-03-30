@@ -11,6 +11,7 @@ const authRouter = require("./routes/auth.routes")
 const usersRouter = require("./routes/User.routes")
 const postsRouter = require("./routes/Produto.routes")
 const categoryRouter = require("./routes/Category.routes")
+const desapegoRouter = require("./routes/Desapego.routes")
 const HelloRouter = require('./routes/Hello.routes.js')
 // const RouterUpload = require('./routes/Post.routes.js')
 
@@ -73,6 +74,7 @@ app.use(cors())
 
 
 //routas
+
 app.get("/", (req, res)=>{ res.send("Requisição não autorizada!") })
 // app.use("/", RouterUpload)
 app.use("/auth/router", authRouter)
@@ -80,6 +82,7 @@ app.use("/hello", HelloRouter)
 app.use("/produto", postsRouter)
 app.use("/users", usersRouter)
 app.use("/categories", categoryRouter)
+app.use("/desapego", desapegoRouter)
 
 //inicializar o app
 const PORT=process.env.PORT

@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
         default: "",
     },
     whatsapp: {
-        type:Number,
+        type:String,
         default: "",
     },
 },
