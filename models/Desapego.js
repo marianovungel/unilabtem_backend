@@ -19,6 +19,15 @@ const DesapegoSchema = new mongoose.Schema({
     },
     categories:{
         type:String,
+        default: "",
+    },
+    cidade:{
+        type:String,
+        default: "",
+    },
+    cep:{
+        type: Object,
+        default: "",
     },
 },
     {timestamps: true}

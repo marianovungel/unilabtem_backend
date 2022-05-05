@@ -13,6 +13,7 @@ const postsRouter = require("./routes/Produto.routes")
 const categoryRouter = require("./routes/Category.routes")
 const desapegoRouter = require("./routes/Desapego.routes")
 const HelloRouter = require('./routes/Hello.routes.js')
+const stripeRouter = require('./routes/stripe.routes')
 // const RouterUpload = require('./routes/Post.routes.js')
 
 
@@ -83,6 +84,7 @@ app.use("/produto", postsRouter)
 app.use("/users", usersRouter)
 app.use("/categories", categoryRouter)
 app.use("/desapego", desapegoRouter)
+app.use('/stripe', stripeRouter)
 
 //inicializar o app
 const PORT=process.env.PORT

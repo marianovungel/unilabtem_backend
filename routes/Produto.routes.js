@@ -63,6 +63,18 @@ router.get('/:id', async (req, res) => {
             res.json({error: true, message: err.message});
         }
 })
+router.post("/search", async(req, res)=>{
+    try{
+        const search = await Produto.find({ title: req.body.title});
+        !search && res.status(400).json("Nenum Produto encontrado ...");
+
+        // const {password, ...others} = user._doc;
+        res.status(200).json(search);
+    }catch(err){
+        res.status(500).json(err);
+    }
+    
+});
 
 //get all post
 router.get('/', async (req, res) => {
