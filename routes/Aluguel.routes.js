@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const Aluguel = require("../models/Aluguel")
+const _ = require("underscore")
+
 
 //create post
 router.post('/', async (req, res) => {
@@ -119,16 +121,17 @@ router.get('/', async (req, res) => {
     const username = req.query.user;
     const catName = req.query.cat;
     try{
-        let posts;
+        let postsAll;
         if(username){
-            posts = await Aluguel.find({username})
+            postsAll = await Aluguel.find({username})
         }else if(catName){
-            posts = await Aluguel.find({categories:{
+            postsAll = await Aluguel.find({categories:{
                 $in:[catName]
             }})
         }else{
-            posts = await Aluguel.find();
+            postsAll = await Aluguel.find();
         }
+        let posts = _.shuffle(postsAll);
         res.status(200).json(posts);
         }catch(err){
             res.json({error: true, message: err.message});

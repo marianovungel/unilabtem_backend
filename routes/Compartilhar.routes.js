@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const Compartilhar = require("../models/Compartilhar")
+const _ = require("underscore")
+
 
 //create post
 router.post('/', async (req, res) => {
@@ -119,16 +121,17 @@ router.get('/', async (req, res) => {
     const username = req.query.user;
     const catName = req.query.cat;
     try{
-        let posts;
+        let postsAll;
         if(username){
-            posts = await Compartilhar.find({username})
+            postsAll = await Compartilhar.find({username})
         }else if(catName){
-            posts = await Compartilhar.find({categories:{
+            postsAll = await Compartilhar.find({categories:{
                 $in:[catName]
             }})
         }else{
-            posts = await Compartilhar.find();
+            postsAll = await Compartilhar.find();
         }
+        let posts = _.shuffle(postsAll);
         res.status(200).json(posts);
         }catch(err){
             res.json({error: true, message: err.message});

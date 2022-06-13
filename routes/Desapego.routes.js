@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const Desapegar = require("../models/Desapego")
+const _ = require("underscore")
+
 
 //create post
 router.post('/', async (req, res) => {
@@ -129,16 +131,17 @@ router.get('/', async (req, res) => {
     const username = req.query.user;
     const catName = req.query.cat;
     try{
-        let posts;
+        let postsAll;
         if(username){
-            posts = await Desapegar.find({username})
+            postsAll = await Desapegar.find({username})
         }else if(catName){
-            posts = await Desapegar.find({categories:{
+            postsAll = await Desapegar.find({categories:{
                 $in:[catName]
             }})
         }else{
-            posts = await Desapegar.find();
+            postsAll = await Desapegar.find();
         }
+        let posts = _.shuffle(postsAll);
         res.status(200).json(posts);
         }catch(err){
             res.json({error: true, message: err.message});
