@@ -78,7 +78,15 @@ app.use(cors())
 
 //routas
 
-app.get("/", (req, res)=>{ res.send("Requisição não autorizada!") })
+app.get("/", (req, res)=>{
+    function aleCod(max, min){
+        return Math.floor(Math.random()*(max - min) + min)
+    }
+    
+    const codigo = aleCod(100000, 1000000)
+    console.log(codigo)
+     res.json(codigo) 
+})
 // app.use("/", RouterUpload)
 app.use("/auth/router", authRouter)
 app.use("/hello", HelloRouter)

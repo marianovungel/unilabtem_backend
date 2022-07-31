@@ -11,8 +11,8 @@ router.put('/:id', async (req, res) => {
     if(novo_user.userId === id){
         if(req.body.password){
                 const salt = await bcrypt.genSalt(10);
-                req.body.password = await bcrypt.hash(req.body.password, salt);
-              }
+                novo_user.password = await bcrypt.hash(req.body.password, salt);
+        }
         try{
             const updateUser = await User.findByIdAndUpdate(id, novo_user);
             res.json({error: false, updateUser});
@@ -62,6 +62,16 @@ router.get('/', async (req, res) => {
     try{
             const user = await User.find();
             res.status(200).json(user);
+        }catch(err){
+            res.json({error: true, message: err.message});
+        }
+})
+
+router.post('/useremail', async (req, res) => {
+    try{
+        const user = await User.findOne({ email: req.body.to});
+        const {password, ...others} = user._doc;
+        res.status(200).json(others);
         }catch(err){
             res.json({error: true, message: err.message});
         }
