@@ -27,7 +27,9 @@ router.post("/register", async(req, res)=>{
 router.post("/login", async(req, res)=>{
     try{
         const user = await User.findOne({ username: req.body.username});
-        !user && res.status(400).json("credencial errada");
+        if(!user){
+            return res.status(400).json("credencial errada");
+        }
 
         const validated = await bcrypt.compare(req.body.password, user.password);
         if(!validated){
@@ -93,6 +95,22 @@ router.post("/usersearch", async(req, res)=>{
         const verdade = true;
         const falsidade = false;
         const user = await User.findOne({ email: req.body.to});
+
+        if(!user){
+            return res.status(200).json(falsidade);
+        }
+        
+        return res.status(200).json(verdade);
+    }catch(err){
+        res.status(500).json(err);
+    }
+    
+});
+router.post("/checkuser", async(req, res)=>{
+    try{
+        const verdade = true;
+        const falsidade = false;
+        const user = await User.findOne({ username: req.body.username});
 
         if(!user){
             return res.status(200).json(falsidade);
