@@ -14,6 +14,10 @@ const ProdutoSchema = new mongoose.Schema({
         type:String,
         // required:false,
     },
+    userId:{
+        type:String,
+        // required:true,
+    },
     username:{
         type:String,
         // required:true,

@@ -10,6 +10,10 @@ const DesapegoSchema = new mongoose.Schema({
     photo:{
         type:String,
     },
+    userId:{
+        type:String,
+        // required:true,
+    },
     username:{
         type:String,
     },

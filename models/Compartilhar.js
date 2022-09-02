@@ -22,6 +22,10 @@ const CompartilharSchema = new mongoose.Schema({
     photo5:{
         type:String,
     },
+    userId:{
+        type:String,
+        // required:true,
+    },
     username:{
         type:String,
     },

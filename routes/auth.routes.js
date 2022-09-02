@@ -3,6 +3,7 @@ const router = express.Router()
 const User = require("../models/User")
 const bcrypt = require("bcrypt")
 const nodemailer = require("nodemailer")
+var jwt = require('jsonwebtoken');
 
 router.post("/register", async(req, res)=>{
     try{
@@ -36,8 +37,17 @@ router.post("/login", async(req, res)=>{
             return res.status(400).json("credencial errada");
         }
 
-        const {password, ...others} = user._doc;
-        res.status(200).json(others);
+        // const accessToken = jwt.sign({
+        //     id: user._id,
+        //   }, process.env.JWT_SEC, {expiresIn: "5d"})
+
+        const accessToken = jwt.sign({
+            id: user._id,
+          }, process.env.JWT_SEC)
+          
+          const {password, ...others} = user._doc;
+          res.status(200).json({...others, accessToken});
+        // res.status(200).json(others);
     }catch(err){
         res.status(500).json(err);
     }

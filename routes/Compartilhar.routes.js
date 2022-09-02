@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Compartilhar = require("../models/Compartilhar")
 const _ = require("underscore")
+const { verifyTokenAndAuthorization } = require('./verifyToken')
 
 
 //create post
@@ -64,7 +65,7 @@ router.post("/search/cidade", async(req, res)=>{
 });
 
 //Update user
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyTokenAndAuthorization, async (req, res) => {
     try{
         const post = await Compartilhar.findById(req.params.id);
         if(post.username === req.body.username){
@@ -85,7 +86,7 @@ router.put('/:id', async (req, res) => {
 })
 
 //delete user
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', verifyTokenAndAuthorization, async (req, res) => {
     try{
         const post = await Compartilhar.findById(req.params.id);
         if(post.username === req.body.username){
