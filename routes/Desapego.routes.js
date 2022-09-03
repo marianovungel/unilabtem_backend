@@ -2,7 +2,8 @@ const express = require('express')
 const router = express.Router()
 const Desapegar = require("../models/Desapego")
 const _ = require("underscore")
-const { verifyTokenAndAuthorization } = require('./verifyToken')
+const { verifyTokenAndAuthorization, verifyTokenAndAuthorizationUpdate } = require('./verifyToken')
+
 
 
 
@@ -77,9 +78,9 @@ router.post("/search/cidade", async(req, res)=>{
 });
 
 //Update user
-router.put('/:id', verifyTokenAndAuthorization, async (req, res) => {
+router.put('/:id', verifyTokenAndAuthorizationUpdate, async (req, res) => {
     try{
-        const post = await Desapego.findById(req.params.id);
+        const post = await Desapegar.findById(req.params.id);
         if(post.username === req.body.username){
             try{
                 const id = req.params.id;
