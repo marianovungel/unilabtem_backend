@@ -18,6 +18,7 @@ router.post('/', async (req, res) => {
             categories:req.body.categories,
             cep:req.body.cep,
             cidade:req.body.cidade,
+            userId: req.body.userId,
 
         };
         const response = await new Desapegar(desapego).save();
