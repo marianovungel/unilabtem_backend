@@ -63,6 +63,10 @@ const CompartilharSchema = new mongoose.Schema({
     banheiro:{
         type:Number,
     },
+    moradores:{
+        type:Number,
+        default: 1
+    },
     contrato:{
         type:String,
     },

@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Compartilhar = require("../models/Compartilhar")
 const _ = require("underscore")
-const { verifyTokenAndAuthorization } = require('./verifyToken')
+const { verifyTokenAndAuthorization, verifyTokenAndAuthorizationUpdate } = require('./verifyToken')
 
 
 //create post
@@ -65,7 +65,7 @@ router.post("/search/cidade", async(req, res)=>{
 });
 
 //Update user
-router.put('/:id', verifyTokenAndAuthorization, async (req, res) => {
+router.put('/:id', verifyTokenAndAuthorizationUpdate, async (req, res) => {
     try{
         const post = await Compartilhar.findById(req.params.id);
         if(post.username === req.body.username){
