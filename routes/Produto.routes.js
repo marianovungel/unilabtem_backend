@@ -78,6 +78,19 @@ router.post("/search", async(req, res)=>{
     
 });
 
+router.post("/search/meu", async(req, res)=>{
+    try{
+        const search = await Produto.find({ username: req.body.username});
+        !search && res.status(400).json("Nenum Produto encontrado ...");
+
+        // const {password, ...others} = user._doc;
+        res.status(200).json(search);
+    }catch(err){
+        res.status(500).json(err);
+    }
+    
+});
+
 //get all post
 router.get('/', async (req, res) => {
     const username = req.query.user;
