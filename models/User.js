@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
     },
     profilePic:{
         type:String,
-        default: "",
+        default: null,
     },
     whatsapp: {
         type:String,
