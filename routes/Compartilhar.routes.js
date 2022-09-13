@@ -39,6 +39,18 @@ router.post("/search/meu", async(req, res)=>{
     }
     
 });
+router.post("/search/meu/id", async(req, res)=>{
+    try{
+        const search = await Compartilhar.find({ userId: req.body.userId});
+        !search && res.status(400).json("Nenum Produto encontrado ...");
+
+        // const {password, ...others} = user._doc;
+        res.status(200).json(search);
+    }catch(err){
+        res.status(500).json(err);
+    }
+    
+});
 router.post("/search/cat", async(req, res)=>{
     try{
         const search = await Compartilhar.find({ categories: req.body.categories});
