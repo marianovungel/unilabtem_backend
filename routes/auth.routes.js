@@ -15,7 +15,7 @@ router.post("/register", async(req, res)=>{
             email: req.body.email,
             whatsapp: req.body.whatsapp,
             password: hashedPass,
-            profilePic: "https://cdn-icons-png.flaticon.com/512/47/47774.png"
+            profilePic: "74d5d28e4db58837d16d30eb57d8e8e6"
         });
 
         const user = await nerUser.save();
