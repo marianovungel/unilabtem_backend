@@ -22,6 +22,8 @@ const UserSchema = new mongoose.Schema({
     whatsapp: {
         type:String,
         default: "",
+        required:true,
+        unique:true
     },
 },
     {timestamps: true}

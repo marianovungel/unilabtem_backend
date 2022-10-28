@@ -117,6 +117,22 @@ router.post("/usersearch", async(req, res)=>{
     }
     
 });
+router.post("/numbersearch", async(req, res)=>{
+    try{
+        const verdade = true;
+        const falsidade = false;
+        const user = await User.findOne({ whatsapp: req.body.whatsapp});
+
+        if(!user){
+            return res.status(200).json(falsidade);
+        }
+        
+        return res.status(200).json(verdade);
+    }catch(err){
+        res.status(500).json(err);
+    }
+    
+});
 router.post("/checkuser", async(req, res)=>{
     try{
         const verdade = true;
