@@ -155,7 +155,7 @@ router.post("/sendemailtoconfirm", async(req, res)=>{
             var from = req.body.from
             var to = req.body.to
             var subject = "Confirmação de E-mail"
-            var message = `Olá ${user.username}! confirma a sua conta de e-mail para poder criar a sua conta na plataforma Unilabtem clicando na URL : http://localhost:3000/conf/${accessTokenAcount}`
+            var message = `Olá ${user.username}! confirma a sua conta de e-mail para poder criar a sua conta na plataforma Unilabtem clicando na URL : https://unilabtem.com.br/conf/${accessTokenAcount}`
 
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
