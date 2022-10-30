@@ -87,6 +87,9 @@ app.get("/", (req, res)=>{
     console.log(codigo)
      res.json(codigo) 
 })
+app.get("/test", (req, res)=>{
+     res.json("Testando a Heroku...") 
+})
 // app.use("/", RouterUpload)
 app.use("/auth/router", authRouter)
 app.use("/hello", HelloRouter)
