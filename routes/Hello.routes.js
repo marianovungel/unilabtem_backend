@@ -10,6 +10,14 @@ router.get("/", async(req, res)=>{
         res.json(err)
     }
 });
+router.get("/tests", async(req, res)=>{
+    try{
+        const hello = "Este é um novo test..."
+        res.json(hello)
+    }catch(err){
+        res.json(err)
+    }
+});
 router.get('/:id', async (req, res) => {
     try{
             const id = req.params.id;
