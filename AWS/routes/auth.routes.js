@@ -63,17 +63,13 @@ router.post("/register", verifyTokenAndAuthorizationUser, async(req, res)=>{
 router.post("/login", async(req, res)=>{
     try{
         const user = await User.findOne({ username: req.body.username});
-        var verificadorUserName = true;
-        var verificadorSenha = true;
         if(!user){
-            verificador = false;
-            return res.status(200).json(verificadorUserName);
+            return res.status(400).json("credencial errada");
         }
 
         const validated = await bcrypt.compare(req.body.password, user.password);
         if(!validated){
-            verificadorSenha = false;
-            return res.status(200).json(verificadorSenha);
+            return res.status(400).json("credencial errada");
         }
 
         // const accessToken = jwt.sign({
