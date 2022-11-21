@@ -1,43 +1,42 @@
 const express = require('express')
 const router = express.Router()
-const api = require("../services/api").pedido
-const aUser = require("../services/api").userget
-const bcrypt = require("bcrypt")
+const api = require("../services/apiSigLogin.js").pedido
+const aUser = require("../services/apiSigLogin.js").userget
 var jwt = require('jsonwebtoken');
-var User = require('../models/User.js')
+var UserSig = require('../models/UserSig.js')
 
 router.post("/login", async(req, res)=>{
     try{
         
         var user = req.body;
+        if(!user.login || !user.senha ){
+            return {message: 'Os dois campos são obrigatórios...'}
+        }
         var getUser = null
         var newTolk = null
         var verificaFalse = false
         
         newTolk = await api(user)
-        if(newTolk.data === false){
-            return { error: false, data: verificaFalse};
+        if(newTolk.error === true){
+            res.status(200).json({message: "usuário não existente!"})
+            // return {status: 200, message: "ESTE USUÀRIO Não EXISTE!"}
+        }else{
+            getUser = await aUser(newTolk.data.access_token)
         }
-        getUser = await aUser(newTolk.data.access_token)
-        const verifyAccante = await User.findOne({
-            username: getUser.data[0].nome,
+        const verifyAccante = await UserSig.findOne({
+            username: user.login,
             email: getUser.data[0].email
         })
         if(verifyAccante){
             const accessToken = jwt.sign({
                 id: verifyAccante._id,
             }, process.env.JWT_SEC)
-            
-            const {password, ...others} = verifyAccante._doc;
-            res.status(200).json({...others, accessToken});
+            res.status(200).json({...verifyAccante._doc, accessToken});
         }else{
-            const salt = await bcrypt.genSalt(10);
-            const hashedPass = await bcrypt.hash(user.senha, salt)
-            const nerUser = new User({
+            const nerUser = new UserSig({
                 username: user.login,
                 email: getUser.data[0].email,
                 whatsapp: "(xx)-xxxxx-xxxx",
-                password: hashedPass,
                 profilePic: "74d5d28e4db58837d16d30eb57d8e8e6"
             });
 
@@ -46,14 +45,12 @@ router.post("/login", async(req, res)=>{
             const accessToken = jwt.sign({
                 id: AuthUser._id,
             }, process.env.JWT_SEC)
-
-            const {password, ...others} = AuthUser._doc;
-            res.status(200).json({...others, accessToken});
+            res.status(200).json({...AuthUser._doc, accessToken});
         }
         
     }catch(err){
-        console.log(err)
-        res.status(500).json(err);
+        
+        res.status(400).json({error: true, message: err.message});
     }
     
 });

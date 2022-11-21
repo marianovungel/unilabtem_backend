@@ -10,19 +10,15 @@ const apicUser = axios.create({
 
 module.exports = {
     pedido: async(newData)=> {
-        const verificadorSigUser = false;
         try{
             const response = await apic.post('/authenticate', newData)
             if(!response){
-                verificadorSigUser = false;
-                return { error: false, data: verificadorSigUser.data};
+                throw new error(null)
             }
 
             return { error: false, data: response.data};
         }catch(err){
-            // return {error: true, message: "teve falha"}
-            // res.status(200).json(verificadorSigUser);
-            return {error: true, message: verificadorSigUser}
+            return {error: true, message: err.message}
         }
     },
 
@@ -34,7 +30,7 @@ module.exports = {
 
             return { error: false, data: response.data};
         }catch(err){
-            return {error: true, message: "teve falha"}
+            return {error: true, message: "credencias erradas!"}
         }
     }
 }

@@ -16,7 +16,7 @@ const aluguelRouter = require("./routes/Aluguel.routes")
 const compartilharRouter = require("./routes/Compartilhar.routes")
 const HelloRouter = require('./routes/Hello.routes.js')
 const stripeRouter = require('./routes/stripe.routes')
-const userSig = require('./routes/AuthUserSig')
+const userSig = require('./routes/AuthSig')
 // const RouterUpload = require('./routes/Post.routes.js')
 
 
