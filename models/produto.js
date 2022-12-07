@@ -35,6 +35,17 @@ const ProdutoSchema = new mongoose.Schema({
         type:String,
         // required:false,
     },
+    estado:{
+        type:String,
+        default: "analise" 
+        //-analise (userId "ver" / Monitor "ver/edit") 
+        //- visivel (UserId "ver/edit" / Monitor "ver/edit" / User "ver") 
+        //- invisivel (Monitor)
+    },
+    updateToken:{
+        type:String,
+        default: null
+    },
 },
     {timestamps: true}
 );

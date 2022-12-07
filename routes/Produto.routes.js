@@ -116,8 +116,19 @@ router.get('/', async (req, res) => {
                 $in:[catName]
             }})
         }else{
-            postsAll = await Produto.find();
+            postsAll = await Produto.find({estado:"visivel"});
         }
+        let posts = _.shuffle(postsAll);
+        res.status(200).json(posts);
+        }catch(err){
+            res.json({error: true, message: err.message});
+        }
+})
+//get all post
+router.post('/monitor', async (req, res) => {
+    var estado = req.body.estado;
+    try{
+        postsAll = await Produto.find({estado:estado});
         let posts = _.shuffle(postsAll);
         res.status(200).json(posts);
         }catch(err){
