@@ -17,6 +17,7 @@ const compartilharRouter = require("./routes/Compartilhar.routes")
 const HelloRouter = require('./routes/Hello.routes.js')
 const stripeRouter = require('./routes/stripe.routes')
 const userSig = require('./routes/AuthSig')
+const produtoMonitor = require('./routes/ProdutoMonitor')
 // const RouterUpload = require('./routes/Post.routes.js')
 
 
@@ -93,6 +94,7 @@ app.get("/", (req, res)=>{
 app.use("/auth/router", authRouter)
 app.use("/hello", HelloRouter)
 app.use("/produto", postsRouter)
+app.use("/produtomonitor", produtoMonitor)
 app.use("/users", usersRouter)
 app.use("/usersig", userSig)
 app.use("/categories", categoryRouter)
