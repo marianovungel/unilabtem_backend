@@ -3,6 +3,7 @@ const router = express.Router()
 const Produto = require("../models/produto")
 const _ = require("underscore")
 const { verifyTokenAndAuthorization, verifyTokenAndAuthorizationUpdate } = require('./verifyToken')
+var jwt = require('jsonwebtoken');
 
 //create post
 router.post('/', async (req, res) => {
@@ -23,7 +24,22 @@ router.put('/:id', verifyTokenAndAuthorizationUpdate, async (req, res) => {
             try{
                 const id = req.params.id;
                 const novo_post = req.body;
-                const posts = await Produto.findByIdAndUpdate(id, novo_post);
+
+                //gerar token de atualização
+                const accessToken = jwt.sign({
+                    title: novo_post.title,
+                    desc: novo_post.desc,
+                    preco: novo_post.preco,
+                }, process.env.JWT_SEC)
+
+                //pegar o produto
+                // const body = await Produto.findById(id)
+                const newBody = {
+                    checkUpdate: true,
+                    updateToken: accessToken
+                }
+                
+                const posts = await Produto.findByIdAndUpdate(id, newBody);
                 res.json({error: false, posts});
             }catch(err){
                 res.json({error: true, message: err.message});  

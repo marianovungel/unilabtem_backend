@@ -42,6 +42,10 @@ const ProdutoSchema = new mongoose.Schema({
         //- visivel (UserId "ver/edit" / Monitor "ver/edit" / User "ver") 
         //- invisivel (Monitor)
     },
+    checkUpdate:{
+        type:Boolean,
+        default: false
+    },
     updateToken:{
         type:String,
         default: null

@@ -2,20 +2,71 @@ const express = require('express')
 const router = express.Router()
 const Produto = require("../models/produto")
 const _ = require("underscore")
-const { verifyTokenAndAuthorization, verifyTokenAndAuthorizationUpdate } = require('./verifyToken')
+var UpdateProduct;
+// const { verifyTokenAndAuthorization, verifyTokenAndAuthorizationUpdate } = require('./verifyToken')
 
-//create post
-router.post('/', async (req, res) => {
-    try{
-        const post = req.body;
-        const response = await new Produto(post).save();
-        res.json({error: false, post: response})
-    }catch(err){
-        res.json({error: true, message: err.message});
+var jwt = require('jsonwebtoken');
+
+
+const verifyTokenUser = (req, res, next)=>{
+    const token = req.body.updateToken;
+    if(token){
+        jwt.verify(token, process.env.JWT_SEC, (err, produto)=>{
+            if(err) res.status(403).json("Token inválido!")
+            req.produto=produto;
+            next();
+        })
+    }else{
+        return res.status(401).json("Usuário Não autenticado!")
     }
+}
+
+const verifyTokenAndAuthorizationUser =  (req, res, next)=>{
+    verifyTokenUser(req, res, async ()=>{
+        // var produtId = await Produto.findById(req.params.id)
+        UpdateProduct = {
+            title: req.produto.title,
+            preco: req.produto.preco,
+            desc: req.produto.desc,
+            updateToken: null,
+            checkUpdate: false
+        };
+        if(req.produto){
+            next();
+        }else{
+            return res.status(403).json("Deixe de Roubo!")
+        }
+    })
+}
+
+router.get('/token/:id', async (req, res) => {
+    try{
+        const post = await Produto.findById(req.params.id);
+        if(post.updateToken){
+            jwt.verify(post.updateToken, process.env.JWT_SEC, (err, produto)=>{
+                if(err) res.status(403).json("Token inválido!")
+                req.produto=produto;
+            })
+            post.title = req.produto.title
+            post.preco = req.produto.preco
+            post.desc = req.produto.desc
+        }
+        res.status(200).json(post);
+        }catch(err){
+            res.json({error: true, message: err.message});
+        }
 })
 
 //Update user
+router.put('/ed/:id', verifyTokenAndAuthorizationUser, async (req, res) => {
+    try{
+        const id = req.params.id;
+        const posts = await Produto.findByIdAndUpdate(id, UpdateProduct);
+        res.json({error: false, posts});
+    }catch(err){
+        res.json({error: true, message: err.message});  
+    }
+})
 router.put('/:id', async (req, res) => {
     try{
         const post = await Produto.findById(req.params.id);
@@ -25,6 +76,16 @@ router.put('/:id', async (req, res) => {
         res.json({error: false, posts});
     }catch(err){
         res.json({error: true, message: err.message});  
+    }
+})
+//create post
+router.post('/', async (req, res) => {
+    try{
+        const post = req.body;
+        const response = await new Produto(post).save();
+        res.json({error: false, post: response})
+    }catch(err){
+        res.json({error: true, message: err.message});
     }
 })
 
@@ -37,17 +98,28 @@ router.delete('/:id', async (req, res) => {
         res.json({error: true, message: err.message});  
     }
 })
+router.put("/recusar/:id", async(req, res) => {
+    try{
+        const post = await Produto.findById(req.params.id);
+        post.updateToken = null
+        post.checkUpdate = false
+        const posts = await Produto.findByIdAndUpdate(req.params.id, post)  
+        res.json({error: false, posts});  
+    }catch(err){
+        res.json({error: true, message: err.message});  
+    }
+})
 
 //get post
-router.get('/:id', async (req, res) => {
+router.get('/checkUpdate', async (req, res) => {
     try{
-        const id = req.params.id;
-        const post = await Produto.findById(id);
+        const post = await Produto.find({checkUpdate: true});
         res.status(200).json(post);
         }catch(err){
             res.json({error: true, message: err.message});
         }
 })
+
 router.post("/search", async(req, res)=>{
     try{
         const search = await Produto.find({ title: req.body.title});

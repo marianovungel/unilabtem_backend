@@ -3,6 +3,7 @@ const router = express.Router()
 const Desapegar = require("../models/Desapego")
 const _ = require("underscore")
 const { verifyTokenAndAuthorization, verifyTokenAndAuthorizationUpdate } = require('./verifyToken')
+var jwt = require('jsonwebtoken');
 
 
 
@@ -20,6 +21,9 @@ router.post('/', async (req, res) => {
             cep:req.body.cep,
             cidade:req.body.cidade,
             userId: req.body.userId,
+            estado: "analise",
+            checkUpdate: false,
+            updateToken: null
 
         };
         const response = await new Desapegar(desapego).save();
@@ -97,7 +101,18 @@ router.put('/:id', verifyTokenAndAuthorizationUpdate, async (req, res) => {
             try{
                 const id = req.params.id;
                 const novo_post = req.body;
-                const posts = await Desapegar.findByIdAndUpdate(id, novo_post);
+                //gerar token de atualização
+                const accessToken = jwt.sign({
+                    title: novo_post.title,
+                    desc: novo_post.desc,
+                }, process.env.JWT_SEC)
+
+                const newBody = {
+                    checkUpdate: true,
+                    updateToken: accessToken
+                }
+
+                const posts = await Desapegar.findByIdAndUpdate(id, newBody);
                 res.json({error: false, posts});
             }catch(err){
                 res.json({error: true, message: err.message});  
@@ -155,7 +170,7 @@ router.get('/', async (req, res) => {
                 $in:[catName]
             }})
         }else{
-            postsAll = await Desapegar.find();
+            postsAll = await Desapegar.find({estado:"visivel"});
         }
         let posts = _.shuffle(postsAll);
         res.status(200).json(posts);
