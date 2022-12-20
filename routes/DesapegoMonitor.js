@@ -45,24 +45,15 @@ router.put('/:id', async (req, res) => {
 })
 
 //delete user
-router.delete('/:id', verifyTokenAndAuthorization, async (req, res) => {
+router.delete('/:id',async (req, res) => {
     try{
-        const post = await Desapegar.findById(req.params.id);
-        if(post.username === req.body.username){
-            try{
-                // await Desapego.delete(req.params.id);
-                await Desapegar.findByIdAndDelete(req.params.id);
-                res.json({error: false, message: "post deletado com sucesso!"});
-            }catch(err){
-                res.json({error: true, message: err.message});  
-            }
-        }else{
-            res.status(500).json("you can delete only you post!")
-        }
+        await Desapegar.findByIdAndDelete(req.params.id);
+        res.json({error: false, message: "post deletado com sucesso!"});
     }catch(err){
         res.json({error: true, message: err.message});  
     }
 })
+
 
 //get post
 router.get('/:id', async (req, res) => {

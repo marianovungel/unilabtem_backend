@@ -78,41 +78,23 @@ router.post("/search/cidade", async(req, res)=>{
 });
 
 //Update user
-router.put('/:id', verifyTokenAndAuthorizationUpdate, async (req, res) => {
-    try{
-        const post = await Aluguel.findById(req.params.id);
-        if(post.username === req.body.username){
-            try{
-                const id = req.params.id;
-                const novo_post = req.body;
-                const posts = await Aluguel.findByIdAndUpdate(id, novo_post);
-                res.json({error: false, posts});
-            }catch(err){
-                res.json({error: true, message: err.message});  
-            }
-        }else{
-            res.status(500).json("you can update only you post!")
-        }
-    }catch(err){
-        res.json({error: true, message: err.message});  
-    }
+router.put('/:id', async (req, res) => {
+    const post = await Aluguel.findById(req.params.id);
+try{
+    post.estado = "visivel"
+    const posts = await Aluguel.findByIdAndUpdate(req.params.id, post);
+    res.json({error: false, posts});
+}catch(err){
+    res.json({error: true, message: err.message});  
+}
 })
 
 //delete user
-router.delete('/:id', verifyTokenAndAuthorization, async (req, res) => {
+router.delete('/:id',async (req, res) => {
     try{
-        const post = await Aluguel.findById(req.params.id);
-        if(post.username === req.body.username){
-            try{
-                // await Desapego.delete(req.params.id);
-                await Aluguel.findByIdAndDelete(req.params.id);
-                res.json({error: false, message: "post deletado com sucesso!"});
-            }catch(err){
-                res.json({error: true, message: err.message});  
-            }
-        }else{
-            res.status(500).json("you can delete only you post!")
-        }
+                
+        await Aluguel.findByIdAndDelete(req.params.id);
+        res.json({error: false, message: "post deletado com sucesso!"});
     }catch(err){
         res.json({error: true, message: err.message});  
     }
@@ -143,7 +125,7 @@ router.get('/', async (req, res) => {
                 $in:[catName]
             }})
         }else{
-            postsAll = await Aluguel.find({estado:"visivel"});
+            postsAll = await Aluguel.find({estado:"analise"});
         }
         let posts = _.shuffle(postsAll);
         res.status(200).json(posts);

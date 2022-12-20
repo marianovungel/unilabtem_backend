@@ -66,6 +66,21 @@ const AluguelSchema = new mongoose.Schema({
     contrato:{
         type:String,
     },
+    estado:{
+        type:String,
+        default: "analise" 
+        //-analise (userId "ver" / Monitor "ver/edit") 
+        //- visivel (UserId "ver/edit" / Monitor "ver/edit" / User "ver") 
+        //- invisivel (Monitor)
+    },
+    checkUpdate:{
+        type:Boolean,
+        default: false
+    },
+    updateToken:{
+        type:String,
+        default: null
+    },
 },
     {timestamps: true}
 );
